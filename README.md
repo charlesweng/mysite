@@ -1,4 +1,5 @@
 # MySite
+[![Build Status](https://travis-ci.org/charlesweng/mysite.svg?branch=master)](https://travis-ci.org/charlesweng/mysite)
 
 ### Getting started with Django Project
 ```

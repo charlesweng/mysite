@@ -1,0 +1,13 @@
+language: python
+sudo: enabled
+dist: trusty
+python:
+  - "3.6"
+services:
+  - mysql
+env:
+  - DJANGO_VERSION=1.11.2
+install:
+  - pip install -q Django==$DJANGO_VERSION
+script:
+  - python --version
