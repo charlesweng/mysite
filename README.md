@@ -31,15 +31,18 @@ Edit mysite/settings.py
 76 DATABASES = {
 77     'default': {
 78         'ENGINE': 'django.db.backends.mysql',
-79         'NAME': 'mysite',
+79         'NAME': 'yourdatabasename',
 80         'USER': 'yourusername',
 81         'PASSWORD': 'yourpassword',
 82         'HOST': '127.0.0.1',
 83         'PORT': '3306',
 84     }
 85 }
-
+```
+```
 Start MySQL server and create user with privilege
+
+$ mysql.server start
 
 $ mysql -u root
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
@@ -63,8 +66,11 @@ MariaDB [(none)]> create database mysite;
 Query OK, 1 row affected (0.00 sec)
 
 MariaDB [(none)]> Bye
+```
+```
+Create database with the name you specified in `NAME:yourdatabasename` field in settings.py
 
-$mysql -u yourusername -p
+$ mysql -u yourusername -p
 Enter password: yourpassword
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 16
@@ -80,5 +86,7 @@ Query OK, 1 row affected (0.00 sec)
 MariaDB [(none)]> Bye
 ```
 ```
+Migrate (update/create) Database With Django's ORM
+
 python manage.py migrate
 ```
