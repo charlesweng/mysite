@@ -1,11 +1,30 @@
 # MySite
 [![Build Status](https://travis-ci.org/charlesweng/mysite.svg?branch=master)](https://travis-ci.org/charlesweng/mysite)
 
+</br>
+### Requirements
+* [Python 3.6](https://www.python.org/downloads/release/python-360/)
+* [Mac OS X](https://www.apple.com/macos/sierra/)
+* [MySQL](https://mariadb.com/downloads?utm_campaign=web_download_server&utm_source=google&utm_medium=ppc&gclid=CjwKEAjw7J3KBRCxv93Q3KSukXQSJADzFzVSbc8WGJoA5lefXsn9KgLVg4361hfx85uC21MiC0Un2RoCRB_w_wcB) (MariaDB)
+* [Django](https://www.djangoproject.com/)
+* [Homebrew](https://brew.sh/)
+
+### Optional
+* [asdf-vm](https://github.com/asdf-vm/asdf)
+(extendable version manager)
+
 ### Getting started with Django Project
 ```
+# Create Project
 django-admin startproject project_name
+# Create App Within Project
 python manage.py startapp app_name
+# Start Server
 python manage.py runserver address:port
+# Create snapshot of changes to database
+python manage.py makemigrations app_name
+# Applies migration changes to database
+python manage.py migrate
 ```
 
 ### Setting up MariaDB
