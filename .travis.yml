@@ -9,5 +9,10 @@ env:
   - DJANGO_VERSION=1.11.2
 install:
   - pip install -q Django==$DJANGO_VERSION
+  - pip install mysqlclient
 script:
-  - python --version
+  - python setup.py
+  - python manage.py migrate
+  - python manage.py runserver &
+  - django_server_pid=$!
+  - kill -SIGINT $django_server_pid

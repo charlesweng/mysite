@@ -6,12 +6,13 @@ MARIADB_ADMIN = os.getenv('MARIDADB_ADMIN', 'root')
 MARIADB_ADMIN_PASSWORD = os.getenv('MARIDADB_ADMIN_PASSWORD', '')
 MARIADB_USER = os.getenv('MARIADB_USER', 'mysiteuser')
 MARIADB_USER_PASSWORD = os.getenv('MARIADB_USER_PASSWORD')
+MYSITE_DATABASE_NAME = os.getenv('MYSITE_DATABASE_NAME', 'mysite')
 
 def create_user(username=MARIADB_USER, password=MARIADB_USER_PASSWORD, hostname=HOSTNAME, 
     admin_username=MARIADB_ADMIN, admin_password=MARIADB_ADMIN_PASSWORD):
 
   if password is None or len(password) == 0:
-    raise ValueError('password for user' + username + ' is either null or empty')
+    raise ValueError('password for user ' + username + ' is either null or empty')
   
   CREATE_USER_QUERY = "CREATE USER '{}'@'{}' IDENTIFIED BY '{}';".format(username, hostname, password) 
 
@@ -40,9 +41,22 @@ def grant_all_privileges(username=MARIADB_USER, hostname=HOSTNAME,
   subprocess.run(GRANT_PRIVILEGES_COMMAND, stdout=subprocess.PIPE)
   subprocess.run(RELOAD_PRIVILEGES_COMMAND, stdout=subprocess.PIPE) 
 
+def create_database(username=MARIADB_USER, password=MARIADB_USER_PASSWORD, hostname=HOSTNAME,
+    database=MYSITE_DATABASE_NAME):
+
+  if password is None or len(password) == 0:
+    raise ValueError('password for user ' + username + ' is either null or empty')
+
+  CREATE_DATABASE_QUERY = "CREATE DATABASE " + database + ";"
+  CREATE_DATABASE_COMMAND = ['mysql', '-u', username, '-p' + password, '-e', CREATE_DATABASE_QUERY]
+
+  subprocess.run(CREATE_DATABASE_COMMAND, stdout=subprocess.PIPE)
+
+
 def setup_database():
   create_user()
   grant_all_privileges()
+  create_database()
 
 def main():
   setup_database()
