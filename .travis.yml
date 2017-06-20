@@ -12,6 +12,7 @@ install:
   - pip install mysqlclient
 script:
   - python setup.py
+  - python manage.py makemigrations polls
   - python manage.py migrate
   - python manage.py runserver &
   - django_server_pid=$!

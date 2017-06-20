@@ -1,7 +1,6 @@
 # MySite
 [![Build Status](https://travis-ci.org/charlesweng/mysite.svg?branch=master)](https://travis-ci.org/charlesweng/mysite)
 
-</br>
 ### Requirements
 * [Python 3.6](https://www.python.org/downloads/release/python-360/)
 * [Mac OS X](https://www.apple.com/macos/sierra/)
@@ -21,8 +20,10 @@ django-admin startproject project_name
 python manage.py startapp app_name
 # Start Server
 python manage.py runserver address:port
-# Create snapshot of changes to database
+# Prepares to create/update/delete tables in database
 python manage.py makemigrations app_name
+# Create snapshot of changes to database
+python manage.py sqlmigrate polls 0001
 # Applies migration changes to database
 python manage.py migrate
 ```
