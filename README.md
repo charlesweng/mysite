@@ -20,12 +20,6 @@ django-admin startproject project_name
 python manage.py startapp app_name
 # Start Server
 python manage.py runserver address:port
-# Prepares to create/update/delete tables in database
-python manage.py makemigrations app_name
-# Create snapshot of changes to database
-python manage.py sqlmigrate polls 0001
-# Applies migration changes to database
-python manage.py migrate
 ```
 
 ### Setting up MariaDB
@@ -45,6 +39,16 @@ rm /usr/local/bin/mysql_config
 brew unlink mariadb-connector-c
 brew link mariadb
 ```
+##### Creates username/password for the mariadb database
+```
+export HOSTNAME=yourhostname (default: localhost)
+export MARIADB_ADMIN=yourmysqldbadmin (default: root)
+export MARIADB_ADMIN_PASSWORD=yourmysqladminpassword (default: none)
+export MARIADB_USER=yourusername (default: mysiteuser)
+export MARIADB_USER_PASSWORD=yourpassword
+export MYSITE_DATABASE_NAME=yourdatabasename (default: mysite)
+python setup.py
+```
 ##### Create/Update MySQL DB
 ```
 Edit mysite/settings.py
@@ -55,59 +59,18 @@ Edit mysite/settings.py
 79         'NAME': 'yourdatabasename',
 80         'USER': 'yourusername',
 81         'PASSWORD': 'yourpassword',
-82         'HOST': '127.0.0.1',
+82         'HOST': 'yourhostname', #(localhost or 127.0.0.1)
 83         'PORT': '3306',
 84     }
 85 }
 ```
 ```
-Start MySQL server and create user with privilege
+# Migrate (update/create) Database With Django's ORM
 
-$ mysql.server start
-
-$ mysql -u root
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 11
-Server version: 10.2.6-MariaDB Homebrew
-
-Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MariaDB [(none)]> create user 'yourusername'@'localhost' IDENTIFIED BY 'yourpassword';
-Query OK, 0 rows affected (0.01 sec)
-
-MariaDB [(none)]> grant all privileges ON * . * TO 'yourusername'@'localhost';
-Query OK, 0 rows affected (0.00 sec)
-
-MariaDB [(none)]> flush privileges;
-Query OK, 0 rows affected (0.00 sec)
-
-MariaDB [(none)]> create database mysite;
-Query OK, 1 row affected (0.00 sec)
-
-MariaDB [(none)]> Bye
-```
-```
-Create database with the name you specified in `NAME:yourdatabasename` field in settings.py
-
-$ mysql -u yourusername -p
-Enter password: yourpassword
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 16
-Server version: 10.2.6-MariaDB Homebrew
-
-Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MariaDB [(none)]> create database mysite;
-Query OK, 1 row affected (0.00 sec)
-
-MariaDB [(none)]> Bye
-```
-```
-Migrate (update/create) Database With Django's ORM
-
+# Prepares to create/update/delete tables in database
+python manage.py makemigrations app_name
+# Create snapshot of changes to database
+python manage.py sqlmigrate polls 0001
+# Applies migration changes to database
 python manage.py migrate
 ```

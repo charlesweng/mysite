@@ -8,8 +8,8 @@ import os
 import subprocess
 
 HOSTNAME = os.getenv('HOSTNAME', 'localhost')
-MARIADB_ADMIN = os.getenv('MARIDADB_ADMIN', 'root')
-MARIADB_ADMIN_PASSWORD = os.getenv('MARIDADB_ADMIN_PASSWORD', None)
+MARIADB_ADMIN = os.getenv('MARIADB_ADMIN', 'root')
+MARIADB_ADMIN_PASSWORD = os.getenv('MARIADB_ADMIN_PASSWORD', None)
 MARIADB_USER = os.getenv('MARIADB_USER', 'mysiteuser')
 MARIADB_USER_PASSWORD = os.getenv('MARIADB_USER_PASSWORD')
 MYSITE_DATABASE_NAME = os.getenv('MYSITE_DATABASE_NAME', 'mysite')
