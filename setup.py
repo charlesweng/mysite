@@ -1,56 +1,46 @@
+"""
+The purpose of this script is to setup the database without relying on any sql client:
+
+Hopefully in the future, I can extend this to include setting up different types of databases
+(e.g. Postgres, Redis, MongoDB, ElasticSearch, HBase, Cassandra)
+"""
 import os
 import subprocess
 
 HOSTNAME = os.getenv('HOSTNAME', 'localhost')
 MARIADB_ADMIN = os.getenv('MARIDADB_ADMIN', 'root')
-MARIADB_ADMIN_PASSWORD = os.getenv('MARIDADB_ADMIN_PASSWORD', '')
+MARIADB_ADMIN_PASSWORD = os.getenv('MARIDADB_ADMIN_PASSWORD', None)
 MARIADB_USER = os.getenv('MARIADB_USER', 'mysiteuser')
 MARIADB_USER_PASSWORD = os.getenv('MARIADB_USER_PASSWORD')
 MYSITE_DATABASE_NAME = os.getenv('MYSITE_DATABASE_NAME', 'mysite')
 
-def create_user(username=MARIADB_USER, password=MARIADB_USER_PASSWORD, hostname=HOSTNAME, 
-    admin_username=MARIADB_ADMIN, admin_password=MARIADB_ADMIN_PASSWORD):
+# DB Query Constants
+CREATE_USER_QUERY = "CREATE USER '{}'@'{}' IDENTIFIED BY '{}';".format(MARIADB_USER, HOSTNAME, MARIADB_USER_PASSWORD)
+# TODO need to grant only the privileges that the user needs for this app
+GRANT_PRIVILEGES_QUERY = "GRANT ALL PRIVILEGES ON * . * TO '{}'@'{}';".format(MARIADB_USER, HOSTNAME)
+RELOAD_PRIVILEGES_QUERY = "FLUSH PRIVILEGES;"
+CREATE_DATABASE_QUERY = "CREATE DATABASE " + MYSITE_DATABASE_NAME + ";"
 
-  if password is None or len(password) == 0:
-    raise ValueError('password for user ' + username + ' is either null or empty')
-  
-  CREATE_USER_QUERY = "CREATE USER '{}'@'{}' IDENTIFIED BY '{}';".format(username, hostname, password) 
+def create_user(admin_username=MARIADB_ADMIN, admin_password=None):
+  run_query(CREATE_USER_QUERY, admin_username, admin_password)
 
-  if admin_password is None:
-    admin_password = ''
-  else:    
-    admin_password = " '-p" + admin_password + "'"
-
-  CREATE_USER_COMMAND = ['mysql', '-u', admin_username,'-e', CREATE_USER_QUERY]
-  subprocess.run(CREATE_USER_COMMAND, stdout=subprocess.PIPE)
 
 # TODO need to grant only the privileges that the user needs for this app
-def grant_all_privileges(username=MARIADB_USER, hostname=HOSTNAME,
-    admin_username=MARIADB_ADMIN, admin_password=MARIADB_ADMIN_PASSWORD):
+def grant_all_privileges(admin_username=MARIADB_ADMIN, admin_password=None):
+  run_query(GRANT_PRIVILEGES_QUERY, admin_username, admin_password)
+  run_query(RELOAD_PRIVILEGES_QUERY, admin_username, admin_password)
 
-  GRANT_PRIVILEGES_QUERY = "GRANT ALL PRIVILEGES ON * . * TO '{}'@'{}';".format(username, hostname)
-  RELOAD_PRIVILEGES_QUERY = "FLUSH PRIVILEGES;"
 
-  if admin_password is None:
-    admin_password = ''
-  else:    
-    admin_password = " '-p" + admin_password + "'"
+def create_database(username=MARIADB_USER, password=MARIADB_USER_PASSWORD):
+  run_query(CREATE_DATABASE_QUERY, username, password)
 
-  GRANT_PRIVILEGES_COMMAND = ['mysql', '-u', admin_username, '-e', GRANT_PRIVILEGES_QUERY]
-  RELOAD_PRIVILEGES_COMMAND = ['mysql', '-u', admin_username, '-e', RELOAD_PRIVILEGES_QUERY]  
-  subprocess.run(GRANT_PRIVILEGES_COMMAND, stdout=subprocess.PIPE)
-  subprocess.run(RELOAD_PRIVILEGES_COMMAND, stdout=subprocess.PIPE) 
 
-def create_database(username=MARIADB_USER, password=MARIADB_USER_PASSWORD, hostname=HOSTNAME,
-    database=MYSITE_DATABASE_NAME):
-
-  if password is None or len(password) == 0:
-    raise ValueError('password for user ' + username + ' is either null or empty')
-
-  CREATE_DATABASE_QUERY = "CREATE DATABASE " + database + ";"
-  CREATE_DATABASE_COMMAND = ['mysql', '-u', username, '-p' + password, '-e', CREATE_DATABASE_QUERY]
-
-  subprocess.run(CREATE_DATABASE_COMMAND, stdout=subprocess.PIPE)
+def run_query(query, username=MARIADB_USER, password=None):
+  if password:
+      db_query_command = ['mysql', '-u', username, '-p' + password, '-e', query]
+  else:
+      db_query_command = ['mysql', '-u', username, '-e', query]
+  subprocess.run(db_query_command, stdout=subprocess.PIPE)
 
 
 def setup_database():
@@ -58,8 +48,10 @@ def setup_database():
   grant_all_privileges()
   create_database()
 
+
 def main():
   setup_database()
+
 
 if __name__ == '__main__':
   main()
