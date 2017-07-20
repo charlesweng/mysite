@@ -11,6 +11,8 @@
 ### Optional
 * [asdf-vm](https://github.com/asdf-vm/asdf)
 (extendable version manager)
+</br>
+Hint: Follow [ExperimentsWithCode's post](https://stackoverflow.com/questions/20361073/installed-django-with-pip-django-admin-py-returns-command-not-found-what-am-i) if you get django-admin not found error
 
 ### Getting started with Django Project
 ```
@@ -42,11 +44,12 @@ brew link mariadb
 ##### Creates username/password for the mariadb database
 ```
 export HOSTNAME=yourhostname (default: localhost)
-export MARIADB_ADMIN=yourmysqldbadmin (default: root)
-export MARIADB_ADMIN_PASSWORD=yourmysqladminpassword (default: none)
-export MARIADB_USER=yourusername (default: mysiteuser)
-export MARIADB_USER_PASSWORD=yourpassword
-export MYSITE_DATABASE_NAME=yourdatabasename (default: mysite)
+export DB_ADMIN=yourmysqldbadmin (default: root)
+export DB_ADMIN_PASSWORD=yourmysqladminpassword (default: none)
+export DB_USER=yourusername (default: mysiteuser)
+export DB_USER_PASSWORD=yourpassword
+export DB_NAME=yourdatabasename (default: mysite)
+export DB_TYPE=yourdatabasetype (default: mariadb)
 python setup.py
 ```
 ##### Create/Update MySQL DB

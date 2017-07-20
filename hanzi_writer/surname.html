@@ -49,9 +49,14 @@
           highlightOnComplete: false, // flash the character when the quiz is successfully completed
         });
 
-        //writer.showOutline();
-        writer.hideOutline();
-        writer.animateCharacter();
+        writer.showOutline();
+        writer.quiz({
+          onCorrectStroke: function(status) { console.log('got a stroke correct! :)', status); },
+          onMistake: function(status) { console.log('Oh no, you made a mistake drawing the stroke :(', status); },
+          onComplete: function(status) { console.log('Yay you finished the whole character! :D', status); }
+        });
+        // writer.hideOutline();
+        // writer.animateCharacter();
     }
 
     window.onload = function() {
