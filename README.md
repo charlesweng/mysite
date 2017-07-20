@@ -11,7 +11,8 @@
 ### Optional
 * [asdf-vm](https://github.com/asdf-vm/asdf)
 (extendable version manager)
-</br>
+
+
 Hint: Follow [ExperimentsWithCode's post](https://stackoverflow.com/questions/20361073/installed-django-with-pip-django-admin-py-returns-command-not-found-what-am-i) if you get django-admin not found error
 
 ### Getting started with Django Project

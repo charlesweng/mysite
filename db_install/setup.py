@@ -49,7 +49,7 @@ class MariaDB:
     self.hostname = hostname
 
 
-  def start_server(self):
+  def start_server(self, directory=None):
     start_mysql_server_result = subprocess.getoutput(['mysql.server restart'])
     logger.debug(start_mysql_server_result)
 
